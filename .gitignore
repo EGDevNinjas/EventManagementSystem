@@ -1,0 +1,10 @@
+# .gitignore
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.log
+*.db
+*.DS_Store
+.env
