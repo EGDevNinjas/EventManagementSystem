@@ -1,3 +1,7 @@
+using System.Configuration;
+using EventManagementSystem.DAL;
+using EventManagementSystem.DAL.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Event_Management_System
 {
@@ -13,6 +17,10 @@ namespace Event_Management_System
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+             options.UseSqlServer(builder.Configuration.GetConnectionString("Conncetion")));
+
 
             var app = builder.Build();
 
