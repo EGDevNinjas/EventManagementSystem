@@ -1,6 +1,8 @@
 using System.Configuration;
+using EventManagementSystem.Core.Interfaces;
 using EventManagementSystem.DAL;
 using EventManagementSystem.DAL.Contexts;
+using EventManagementSystem.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Event_Management_System
@@ -17,6 +19,9 @@ namespace Event_Management_System
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            // Adding Dependency Injection
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Conncetion")));
