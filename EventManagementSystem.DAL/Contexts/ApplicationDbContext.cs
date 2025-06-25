@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using EventManagementSystem.Core.Entities;
+using EventManagementSystem.Core.EntityConfigs;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventManagementSystem.DAL.Contexts
@@ -47,7 +48,11 @@ namespace EventManagementSystem.DAL.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
+
             // Composite Keys
             modelBuilder.Entity<SavedEvent>()
                 .HasKey(se => new { se.UserId, se.EventId });

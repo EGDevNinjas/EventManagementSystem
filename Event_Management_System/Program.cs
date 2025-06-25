@@ -1,9 +1,16 @@
-using System.Configuration;
+﻿using System.Configuration;
+using EventManagementSystem.Core.EntityConfigs;
+using EventManagementSystem.Core.Entities;
 using EventManagementSystem.Core.Interfaces;
 using EventManagementSystem.DAL;
 using EventManagementSystem.DAL.Contexts;
 using EventManagementSystem.DAL.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using EventManagementSystem.Core.Validators;
 
 namespace Event_Management_System
 {
@@ -21,6 +28,11 @@ namespace Event_Management_System
             builder.Services.AddSwaggerGen();
             // Adding Dependency Injection
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            // عشان FluentValidation يقدر يلاقي الـ Validator classes اللي عملتها (زي UserValidator)
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
+
 
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>

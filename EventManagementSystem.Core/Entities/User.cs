@@ -27,4 +27,5 @@ namespace EventManagementSystem.Core.Entities
         public ICollection<SavedEvent> SavedEvents { get; set; }
 
     }
+
 }

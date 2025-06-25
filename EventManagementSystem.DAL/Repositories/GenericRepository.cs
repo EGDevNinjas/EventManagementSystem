@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using EventManagementSystem.Core.Interfaces;
 using EventManagementSystem.DAL.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventManagementSystem.DAL.Repositories
 {
@@ -22,24 +24,44 @@ namespace EventManagementSystem.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public IQueryable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().AsNoTracking();
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FindAsync(id); 
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
         }
+
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Where(predicate).AsNoTracking();
+        }
+        public async Task<int> CountAsync()
+        {
+            return await _context.Set<T>().CountAsync();
+        }
+        public IQueryable<T> GetPaged(int pageNumber, int pageSize)
+        {
+            return _context.Set<T>()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking();
+        }
+
     }
+
 }
