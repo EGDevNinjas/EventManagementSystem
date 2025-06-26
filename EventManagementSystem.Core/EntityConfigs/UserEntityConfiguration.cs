@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventManagementSystem.Core.EntityConfigs
 {
-    public class UserEntityConfiguration: IEntityTypeConfiguration<User>
+    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -54,7 +54,7 @@ namespace EventManagementSystem.Core.EntityConfigs
             .HasForeignKey<Staff>(s => s.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-             // 1:M User ↔ Bookings
+            // 1:M User ↔ Bookings
             builder.HasMany(u => u.Bookings)
              .WithOne(b => b.User)
              .HasForeignKey(b => b.UserId)
@@ -68,8 +68,8 @@ namespace EventManagementSystem.Core.EntityConfigs
             // 1:M User ↔ Notifications
             builder.HasMany(u => u.Notifications)
              .WithOne(n => n.User)
-        .HasForeignKey(n => n.UserId)
-        .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             // 1:M User ↔ SavedEvents
             builder.HasMany(u => u.SavedEvents)
@@ -78,5 +78,6 @@ namespace EventManagementSystem.Core.EntityConfigs
          .OnDelete(DeleteBehavior.Cascade);
 
         }
+   
     }
 }

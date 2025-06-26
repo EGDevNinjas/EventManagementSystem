@@ -21,7 +21,10 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
+            if (id == null || id < 0) return BadRequest("Id format is not valid");
+
             var user = await _repository.GetByIdAsync(id);
+            if (user == null) return NotFound("User not found");
             var userDto = new RegisterUserDto
             {
                 FirstName = user.FirstName,
@@ -31,6 +34,10 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
             };
             return Ok(userDto);
         }
+
+
+
+
 
     }
 }

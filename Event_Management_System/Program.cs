@@ -7,10 +7,9 @@ using EventManagementSystem.DAL.Contexts;
 using EventManagementSystem.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using EventManagementSystem.Core.Validators;
+using EventManagementSystem.Core.DTO_Validators;
 
 namespace Event_Management_System
 {

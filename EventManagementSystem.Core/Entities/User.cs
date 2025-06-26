@@ -17,7 +17,6 @@ namespace EventManagementSystem.Core.Entities
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public int Role { get; set; }
-
         public Organizer Organizer { get; set; }
         public Staff Staff { get; set; }
 
