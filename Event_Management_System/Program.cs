@@ -31,13 +31,23 @@ namespace Event_Management_System
             // عشان FluentValidation يقدر يلاقي الـ Validator classes اللي عملتها (زي UserValidator)
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
-
-
+          
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 
             var app = builder.Build();
+
+            // Seed data
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                db.SeedData();
+            }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

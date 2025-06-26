@@ -46,7 +46,7 @@ namespace EventManagementSystem.DAL.Contexts
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<EmailQueue> EmailQueues { get; set; }
         public DbSet<UserRole> userRoles { get; set; }
-        public DbSet<Role> roles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,7 +54,7 @@ namespace EventManagementSystem.DAL.Contexts
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfig).Assembly);
 
             // Composite Keys
             modelBuilder.Entity<SavedEvent>()
@@ -62,6 +62,10 @@ namespace EventManagementSystem.DAL.Contexts
 
             modelBuilder.Entity<EventsSpeaker>()
                 .HasKey(es => new { es.EventId, es.SpeakerId });
+
+
+            modelBuilder.Entity<Ticket>()
+                .HasIndex(t => t.EventId);
 
 
             // One-to-One: User ↔ Organizer
@@ -110,6 +114,7 @@ namespace EventManagementSystem.DAL.Contexts
 
 
         }
+
 
 
     }
