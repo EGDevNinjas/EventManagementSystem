@@ -20,6 +20,7 @@ namespace EventManagementSystem.Core.Entities
         public Organizer Organizer { get; set; }
         public Staff Staff { get; set; }
 
+        public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<EventRating> Ratings { get; set; }
         public ICollection<Notification> Notifications { get; set; }
