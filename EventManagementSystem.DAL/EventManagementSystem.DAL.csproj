@@ -20,4 +20,8 @@
     <ProjectReference Include="..\EventManagementSystem.Core\EventManagementSystem.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
