@@ -17,15 +17,16 @@ namespace EventManagementSystem.Core.Entities
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public int Role { get; set; }
-
         public Organizer Organizer { get; set; }
         public Staff Staff { get; set; }
 
+        public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<EventRating> Ratings { get; set; }
         public ICollection<Notification> Notifications { get; set; }
         public ICollection<SavedEvent> SavedEvents { get; set; }
-
+        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<EmailQueueUser> EmailQueueUsers { get; set; }
     }
 
 }

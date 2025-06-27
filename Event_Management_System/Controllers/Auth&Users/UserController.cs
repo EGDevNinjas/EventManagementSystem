@@ -1,4 +1,5 @@
-﻿using EventManagementSystem.API.DTOs;
+﻿using System.Text.Json;
+using EventManagementSystem.API.DTOs;
 using EventManagementSystem.Core.Entities;
 using EventManagementSystem.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -18,10 +19,13 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
+            if (id == null || id < 0) return BadRequest("Id format is not valid");
+
             var user = await _repository.GetByIdAsync(id);
+            if (user == null) return NotFound("User not found");
             var userDto = new RegisterUserDto
             {
                 FirstName = user.FirstName,
@@ -31,6 +35,15 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
             };
             return Ok(userDto);
         }
+
+        [HttpGet]
+        public  IActionResult GetAll()
+        {
+            var users =  _repository.GetAll();
+            if (users == null) return NotFound("no users");
+            return Ok(users);
+        }
+
 
     }
 }
