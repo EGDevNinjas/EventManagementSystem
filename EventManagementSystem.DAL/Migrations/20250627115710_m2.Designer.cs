@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventManagementSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250625154514_Adding Validations On Models")]
-    partial class AddingValidationsOnModels
+    [Migration("20250627115710_m2")]
+    partial class m2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,15 +35,18 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Action")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Details")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("TargetEntity")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("TargetId")
                         .HasColumnType("int");
@@ -83,7 +86,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("QRCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -92,7 +96,7 @@ namespace EventManagementSystem.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -118,7 +122,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -141,22 +146,43 @@ namespace EventManagementSystem.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsSent")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("SentAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Subject")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ToEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsSent");
+
                     b.ToTable("EmailQueues");
+                });
+
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.EmailQueueUser", b =>
+                {
+                    b.Property<int>("EmailQueueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmailQueueId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmailQueueUser");
                 });
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Event", b =>
@@ -172,7 +198,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("CoverImage")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -182,20 +209,22 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("DurationInHours")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(9,6)");
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(9,6)");
 
                     b.Property<int>("MaxAttendees")
                         .HasColumnType("int");
@@ -203,13 +232,14 @@ namespace EventManagementSystem.DAL.Migrations
                     b.Property<int>("OrganizerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -233,11 +263,13 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("MediaType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("datetime2");
@@ -259,7 +291,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -307,7 +340,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
@@ -317,7 +351,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -338,15 +373,19 @@ namespace EventManagementSystem.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -360,17 +399,20 @@ namespace EventManagementSystem.DAL.Migrations
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Organizer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Company")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Organizers");
                 });
@@ -391,15 +433,18 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TransactionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -407,6 +452,24 @@ namespace EventManagementSystem.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.SavedEvent", b =>
@@ -437,7 +500,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -453,7 +517,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -474,11 +539,13 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -492,7 +559,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -512,7 +580,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("RoleDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("StaffId")
                         .HasColumnType("int");
@@ -538,14 +607,20 @@ namespace EventManagementSystem.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasAnnotation("Range", new[] { 0.0, 999999.98999999999 });
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1)
+                        .HasAnnotation("Range", new[] { 1, 1000 });
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -608,12 +683,27 @@ namespace EventManagementSystem.DAL.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.UserRole", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
             modelBuilder.Entity("EventManagementSystem.Core.Entities.AuditLog", b =>
                 {
                     b.HasOne("EventManagementSystem.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -623,7 +713,8 @@ namespace EventManagementSystem.DAL.Migrations
                 {
                     b.HasOne("EventManagementSystem.Core.Entities.Staff", "CheckedInByStaff")
                         .WithMany()
-                        .HasForeignKey("CheckedInByStaffId");
+                        .HasForeignKey("CheckedInByStaffId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("EventManagementSystem.Core.Entities.Ticket", "Ticket")
                         .WithMany("Bookings")
@@ -644,12 +735,31 @@ namespace EventManagementSystem.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.EmailQueueUser", b =>
+                {
+                    b.HasOne("EventManagementSystem.Core.Entities.EmailQueue", "EmailQueue")
+                        .WithMany("EmailQueueUsers")
+                        .HasForeignKey("EmailQueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventManagementSystem.Core.Entities.User", "User")
+                        .WithMany("EmailQueueUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmailQueue");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Event", b =>
                 {
                     b.HasOne("EventManagementSystem.Core.Entities.Category", "Category")
                         .WithMany("Events")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EventManagementSystem.Core.Entities.Organizer", "Organizer")
@@ -738,7 +848,7 @@ namespace EventManagementSystem.DAL.Migrations
                 {
                     b.HasOne("EventManagementSystem.Core.Entities.User", "User")
                         .WithOne("Organizer")
-                        .HasForeignKey("EventManagementSystem.Core.Entities.Organizer", "Id")
+                        .HasForeignKey("EventManagementSystem.Core.Entities.Organizer", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -810,7 +920,7 @@ namespace EventManagementSystem.DAL.Migrations
                     b.HasOne("EventManagementSystem.Core.Entities.Event", "Event")
                         .WithMany("StaffAssignments")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EventManagementSystem.Core.Entities.Staff", "Staff")
@@ -833,12 +943,31 @@ namespace EventManagementSystem.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("EventManagementSystem.Core.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Tickets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.UserRole", b =>
+                {
+                    b.HasOne("EventManagementSystem.Core.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventManagementSystem.Core.Entities.User", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Event");
+                    b.Navigation("Role");
 
                     b.Navigation("User");
                 });
@@ -852,6 +981,11 @@ namespace EventManagementSystem.DAL.Migrations
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Category", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.EmailQueue", b =>
+                {
+                    b.Navigation("EmailQueueUsers");
                 });
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Event", b =>
@@ -870,6 +1004,11 @@ namespace EventManagementSystem.DAL.Migrations
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Organizer", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("EventManagementSystem.Core.Entities.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Speaker", b =>
@@ -893,6 +1032,8 @@ namespace EventManagementSystem.DAL.Migrations
                 {
                     b.Navigation("Bookings");
 
+                    b.Navigation("EmailQueueUsers");
+
                     b.Navigation("Notifications");
 
                     b.Navigation("Organizer")
@@ -904,6 +1045,10 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Navigation("Staff")
                         .IsRequired();
+
+                    b.Navigation("Tickets");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
