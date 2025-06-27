@@ -29,7 +29,7 @@ namespace EventManagementSystem.Core.EntityConfigs
             builder.HasOne(b => b.CheckedInByStaff)
                    .WithMany()
                    .HasForeignKey(b => b.CheckedInByStaffId)
-                   .OnDelete(DeleteBehavior.NoAction); // لو الستاف اتمسح، نخلي القيمة null
+                   .OnDelete(DeleteBehavior.NoAction); 
 
             // Booking ↔ Payment (One-to-One)
             builder.HasOne(b => b.Payment)
