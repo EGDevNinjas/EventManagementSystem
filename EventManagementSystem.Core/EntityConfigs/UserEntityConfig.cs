@@ -46,7 +46,7 @@ namespace EventManagementSystem.Core.EntityConfigs
             // 1:1 User ↔ Organizer
             builder.HasOne(u => u.Organizer)
            .WithOne(o => o.User)
-           .HasForeignKey<Organizer>(o => o.Id);
+           .HasForeignKey<Organizer>(o => o.UserId);
 
             // 1:1 User ↔ Staff
             builder.HasOne(u => u.Staff)

@@ -21,7 +21,7 @@ namespace EventManagementSystem.Core.EntityConfigs
             builder.HasOne(se => se.User)
                 .WithMany(u => u.SavedEvents)
                 .HasForeignKey(se => se.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(se => se.Event)
                 .WithMany()

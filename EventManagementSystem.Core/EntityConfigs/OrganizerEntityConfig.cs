@@ -13,18 +13,19 @@ namespace EventManagementSystem.Core.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Organizer> builder)
         {
-            builder.HasKey(o => o.Id);
+            builder.HasKey(o => o.UserId);
 
             builder.Property(o => o.Company)
                 .IsRequired()
                 .HasMaxLength(50);
 
             builder.Property(o => o.IsActive)
-                .IsRequired().HasDefaultValue(true);
+                .IsRequired()
+                .HasDefaultValue(true);
 
             builder.HasOne(o => o.User)
                 .WithOne(u => u.Organizer)
-                .HasForeignKey<Organizer>(o => o.Id)
+                .HasForeignKey<Organizer>(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(o => o.Events)

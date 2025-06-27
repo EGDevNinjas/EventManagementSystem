@@ -371,7 +371,7 @@ namespace EventManagementSystem.DAL.Migrations
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Organizer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Company")
@@ -384,7 +384,7 @@ namespace EventManagementSystem.DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Organizers");
                 });
@@ -819,7 +819,7 @@ namespace EventManagementSystem.DAL.Migrations
                 {
                     b.HasOne("EventManagementSystem.Core.Entities.User", "User")
                         .WithOne("Organizer")
-                        .HasForeignKey("EventManagementSystem.Core.Entities.Organizer", "Id")
+                        .HasForeignKey("EventManagementSystem.Core.Entities.Organizer", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

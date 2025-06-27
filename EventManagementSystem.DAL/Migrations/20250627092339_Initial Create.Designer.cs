@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventManagementSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250627082437_Adding Validations & EmailQueueUserTable")]
-    partial class AddingValidationsEmailQueueUserTable
+    [Migration("20250627092339_Initial Create")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -374,7 +374,7 @@ namespace EventManagementSystem.DAL.Migrations
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.Organizer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Company")
@@ -387,7 +387,7 @@ namespace EventManagementSystem.DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Organizers");
                 });
@@ -670,7 +670,7 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("userRoles");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("EventManagementSystem.Core.Entities.AuditLog", b =>
@@ -822,7 +822,7 @@ namespace EventManagementSystem.DAL.Migrations
                 {
                     b.HasOne("EventManagementSystem.Core.Entities.User", "User")
                         .WithOne("Organizer")
-                        .HasForeignKey("EventManagementSystem.Core.Entities.Organizer", "Id")
+                        .HasForeignKey("EventManagementSystem.Core.Entities.Organizer", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

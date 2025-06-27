@@ -54,6 +54,8 @@ namespace EventManagementSystem.DAL.Contexts
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfig).Assembly);
 
+            // "FK_Bookings_Tickets_TicketId",
+            // Booking onDelete: ReferentialAction.Restrict);
 
             modelBuilder.Entity<EventsSpeaker>()
                 .HasKey(es => new { es.EventId, es.SpeakerId });
