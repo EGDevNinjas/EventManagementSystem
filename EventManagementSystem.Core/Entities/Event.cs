@@ -21,7 +21,7 @@ namespace EventManagementSystem.Core.Entities
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public int MaxAttendees { get; set; }
-        public string Status { get; set; }
+        public EventStatus Status { get; set; } // بدل string Status
         public string CoverImage { get; set; }
         public DateTime CreatedAt { get; set; }
 
@@ -32,6 +32,15 @@ namespace EventManagementSystem.Core.Entities
         public ICollection<Session> Sessions { get; set; }
         public ICollection<StaffAssignment> StaffAssignments { get; set; }
         public ICollection<EventMedia> Media { get; set; }
-        public ICollection<EventRating> Ratings { get; set; } 
+        public ICollection<EventRating> Ratings { get; set; }
+    }
+
+    // Enum لتعريف حالات الحدث
+    public enum EventStatus
+    {
+        Draft,
+        Published,
+        Cancelled,
+        Completed
     }
 }
