@@ -8,5 +8,8 @@ namespace EventManagementSystem.API.Controllers.StaffPanel
     public class CheckInController : ControllerBase
     {
         // QR Scan, check-in users
+
+
+
     }
 }

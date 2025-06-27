@@ -45,39 +45,20 @@ namespace EventManagementSystem.DAL.Contexts
         public DbSet<StaffAssignment> StaffAssignments { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<EmailQueue> EmailQueues { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
 
-            // Composite Keys
-            modelBuilder.Entity<SavedEvent>()
-                .HasKey(se => new { se.UserId, se.EventId });
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfig).Assembly);
+
+            // "FK_Bookings_Tickets_TicketId",
+            // Booking onDelete: ReferentialAction.Restrict);
 
             modelBuilder.Entity<EventsSpeaker>()
                 .HasKey(es => new { es.EventId, es.SpeakerId });
-
-
-            // One-to-One: User ↔ Organizer
-            modelBuilder.Entity<Organizer>()
-                .HasOne(o => o.User)
-                .WithOne(u => u.Organizer)
-                .HasForeignKey<Organizer>(o => o.Id);
-
-            // One-to-One: User ↔ Staff
-            modelBuilder.Entity<Staff>()
-                .HasOne(s => s.User)
-                .WithOne(u => u.Staff)
-                .HasForeignKey<Staff>(s => s.Id);
-
-            // One-to-One: Booking ↔ Payment
-            modelBuilder.Entity<Payment>()
-                .HasOne(p => p.Booking)
-                .WithOne(b => b.Payment)
-                .HasForeignKey<Payment>(p => p.BookingId);
 
             modelBuilder.Entity<EventRating>()
             .HasOne(er => er.Event)
@@ -93,9 +74,5 @@ namespace EventManagementSystem.DAL.Contexts
 
 
         }
-
-
-
-
     }
 }

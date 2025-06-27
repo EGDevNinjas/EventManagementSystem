@@ -15,6 +15,8 @@ namespace EventManagementSystem.Core.Entities
         public bool IsSent { get; set; }
         public DateTime? SentAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        public ICollection<EmailQueueUser> EmailQueueUsers { get; set; }
+
     }
 
 }

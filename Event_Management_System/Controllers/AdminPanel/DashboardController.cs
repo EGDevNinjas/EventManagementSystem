@@ -8,5 +8,6 @@ namespace EventManagementSystem.API.Controllers.AdminPanel
     public class DashboardController : ControllerBase
     {
         // Reports / Stats
+
     }
 }
