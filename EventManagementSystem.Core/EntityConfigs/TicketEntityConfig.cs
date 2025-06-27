@@ -55,7 +55,7 @@ namespace EventManagementSystem.Core.EntityConfigs
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.HasOne(t => t.User)
-                .WithMany()
+                .WithMany(u => u.Tickets)
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 

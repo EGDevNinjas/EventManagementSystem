@@ -36,14 +36,6 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
             return Ok(userDto);
         }
 
-        [HttpGet("json")]
-        public IActionResult GetUsersFromJson()
-        {
-            var json = System.IO.File.ReadAllText("DataSeeders/Users.json");
-            var users = JsonSerializer.Deserialize<List<User>>(json);
-            return Ok(users);
-        }
-
         [HttpGet]
         public  IActionResult GetAll()
         {
@@ -51,7 +43,6 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
             if (users == null) return NotFound("no users");
             return Ok(users);
         }
-
 
 
     }

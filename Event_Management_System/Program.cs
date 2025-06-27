@@ -39,11 +39,11 @@ namespace Event_Management_System
             var app = builder.Build();
 
             // Seed data
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                db.SeedData();
-            }
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            //    db.SeedData();
+            //}
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 

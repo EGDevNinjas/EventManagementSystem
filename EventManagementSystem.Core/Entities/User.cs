@@ -25,7 +25,8 @@ namespace EventManagementSystem.Core.Entities
         public ICollection<EventRating> Ratings { get; set; }
         public ICollection<Notification> Notifications { get; set; }
         public ICollection<SavedEvent> SavedEvents { get; set; }
-
+        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<EmailQueueUser> EmailQueueUsers { get; set; }
     }
 
 }
