@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using EventManagementSystem.Core.DTO_Validators;
+using EventManagementSystem.BLL.Healpers;
 
 namespace Event_Management_System
 {
@@ -25,6 +26,9 @@ namespace Event_Management_System
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Config To Enable Auto Mapper 
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             // Adding Dependency Injection
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

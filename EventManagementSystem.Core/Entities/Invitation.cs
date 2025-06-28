@@ -13,7 +13,6 @@ namespace EventManagementSystem.Core.Entities
         public string Email { get; set; }
         public string Status { get; set; }
         public DateTime? RSVPAt { get; set; }
-
         public Event Event { get; set; }
     }
 }
