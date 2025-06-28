@@ -11,7 +11,7 @@ namespace EventManagementSystem.Core.EntityConfigs
             builder.HasKey(b => b.Id);
 
             builder.Property(b => b.QRCode)
-                   .HasMaxLength(200);
+                   .HasMaxLength(2000);
 
             builder.Property(b => b.TotalPrice)
                    .HasColumnType("decimal(10,2)");

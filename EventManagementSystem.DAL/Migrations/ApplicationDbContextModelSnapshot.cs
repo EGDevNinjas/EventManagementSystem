@@ -83,8 +83,8 @@ namespace EventManagementSystem.DAL.Migrations
 
                     b.Property<string>("QRCode")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

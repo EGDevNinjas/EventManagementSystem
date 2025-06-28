@@ -11,6 +11,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using EventManagementSystem.Core.DTO_Validators;
 using EventManagementSystem.BLL.Healpers;
+using EventManagementSystem.Core.DTO_Validators.BookingValidators;
 
 namespace Event_Management_System
 {
@@ -35,6 +36,8 @@ namespace Event_Management_System
             // عشان FluentValidation يقدر يلاقي الـ Validator classes اللي عملتها (زي UserValidator)
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<BookingValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingDTOValidator>();
           
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>

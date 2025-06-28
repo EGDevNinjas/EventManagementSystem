@@ -1,4 +1,4 @@
-﻿namespace EventManagementSystem.API.DTOs
+﻿namespace EventManagementSystem.Core.DTOs
 {
     public class EventDTO
     {

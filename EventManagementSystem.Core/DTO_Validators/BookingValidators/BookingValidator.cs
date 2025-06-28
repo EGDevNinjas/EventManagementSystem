@@ -1,7 +1,7 @@
-﻿using EventManagementSystem.API.DTOs;
+﻿using EventManagementSystem.Core.DTOs;
 using FluentValidation;
 
-namespace EventManagementSystem.API.DTO_Validators
+namespace EventManagementSystem.Core.DTO_Validators.BookingValidators
 {
     public class BookingValidator : AbstractValidator<BookingDTO>
     {
@@ -43,5 +43,8 @@ namespace EventManagementSystem.API.DTO_Validators
                 .LessThanOrEqualTo(DateTime.Now)
                 .WithMessage("Created date cannot be in the future");
         }
+    
     }
+
+
 }

@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using EventManagementSystem.API.DTOs;
+using EventManagementSystem.Core.DTOs;
 using EventManagementSystem.Core.Entities;
 using EventManagementSystem.Core.Interfaces;
 using Microsoft.AspNetCore.Http;

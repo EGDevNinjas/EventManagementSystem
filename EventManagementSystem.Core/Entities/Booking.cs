@@ -19,6 +19,7 @@ namespace EventManagementSystem.Core.Entities
         public DateTime? CheckInTime { get; set; }
         public int? CheckedInByStaffId { get; set; }
         public DateTime CreatedAt { get; set; }
+
         public User User { get; set; }
         public Ticket Ticket { get; set; }
         public Staff CheckedInByStaff { get; set; }
