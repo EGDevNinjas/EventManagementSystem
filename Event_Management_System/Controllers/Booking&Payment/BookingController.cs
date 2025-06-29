@@ -150,11 +150,11 @@ namespace EventManagementSystem.API.Controllers.Boking_Payment
         {
             var booking = await _repository.GetByIdAsync(id);
             if (booking == null) return BadRequest($"no Booking with id : {id}");
-            
+
             await _repository.DeleteAsync(booking);
             return NoContent();
         }
 
-    
+
     }
 }

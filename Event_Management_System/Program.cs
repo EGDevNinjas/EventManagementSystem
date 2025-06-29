@@ -38,7 +38,7 @@ namespace Event_Management_System
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<BookingValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingDTOValidator>();
-          
+            
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));

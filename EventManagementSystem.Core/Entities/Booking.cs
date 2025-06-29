@@ -14,7 +14,7 @@ namespace EventManagementSystem.Core.Entities
         public int TicketId { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
-        public string QRCode { get; set; }
+        public string QRCode { get; set; } = string.Empty;
         public bool IsCheckedIn { get; set; }
         public DateTime? CheckInTime { get; set; }
         public int? CheckedInByStaffId { get; set; }

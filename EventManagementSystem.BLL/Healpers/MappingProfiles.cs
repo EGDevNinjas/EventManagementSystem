@@ -10,11 +10,12 @@ using EventManagementSystem.Core.Entities;
 
 namespace EventManagementSystem.BLL.Healpers
 {
-    public class MappingProfiles:Profile 
+    public class MappingProfiles : Profile
     {
-        public MappingProfiles() 
+        public MappingProfiles()
         {
             CreateMap<Booking, BookingDTO>().ReverseMap();
+            CreateMap<Payment, PaymentDTO>().ReverseMap();
         }
     }
 }
