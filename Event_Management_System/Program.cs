@@ -70,8 +70,11 @@ namespace Event_Management_System
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+            builder.Services.AddMemoryCache();
 
             var app = builder.Build();
+
+
 
             // Seed data
             //using (var scope = app.Services.CreateScope())
