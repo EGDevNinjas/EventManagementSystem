@@ -37,7 +37,7 @@ namespace EventManagementSystem.DAL.Repositories
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _context.Set<T>().FindAsync(id); 
+            return await _context.Set<T>().FindAsync(id);
         }
 
         public async Task UpdateAsync(T entity)
@@ -50,10 +50,12 @@ namespace EventManagementSystem.DAL.Repositories
         {
             return _context.Set<T>().Where(predicate).AsNoTracking();
         }
+
         public async Task<int> CountAsync()
         {
             return await _context.Set<T>().CountAsync();
         }
+
         public IQueryable<T> GetPaged(int pageNumber, int pageSize)
         {
             return _context.Set<T>()
@@ -62,6 +64,17 @@ namespace EventManagementSystem.DAL.Repositories
                 .AsNoTracking();
         }
 
-    }
+        // ✅ new : support for filtering with pagination
+        public IQueryable<T> GetPaged(Expression<Func<T, bool>>? filter, int pageNumber, int pageSize)
+        {
+            var query = _context.Set<T>().AsNoTracking();
 
+            if (filter != null)
+                query = query.Where(filter);
+
+            return query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize);
+        }
+    }
 }

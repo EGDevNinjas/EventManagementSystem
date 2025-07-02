@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EventManagementSystem.Core.Entities
+namespace EventManagementSystem.Core.DTOs
 {
-    public class Payment
+    public class PaymentDTO
     {
         public int Id { get; set; }
         public int BookingId { get; set; }
@@ -16,7 +10,5 @@ namespace EventManagementSystem.Core.Entities
         public decimal Amount { get; set; }
         public DateTime? PaidAt { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        public Booking Booking { get; set; } = null!;
     }
 }

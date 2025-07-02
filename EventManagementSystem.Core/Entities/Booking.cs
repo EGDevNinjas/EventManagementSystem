@@ -14,11 +14,12 @@ namespace EventManagementSystem.Core.Entities
         public int TicketId { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
-        public string QRCode { get; set; }
+        public string QRCode { get; set; } = string.Empty;
         public bool IsCheckedIn { get; set; }
         public DateTime? CheckInTime { get; set; }
         public int? CheckedInByStaffId { get; set; }
         public DateTime CreatedAt { get; set; }
+
         public User User { get; set; }
         public Ticket Ticket { get; set; }
         public Staff CheckedInByStaff { get; set; }

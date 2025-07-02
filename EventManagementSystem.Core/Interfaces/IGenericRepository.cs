@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 
 namespace EventManagementSystem.Core.Interfaces
 {
-    public interface IGenericRepository<T> where T : class 
+    public interface IGenericRepository<T> where T : class
     {
-        IQueryable<T> GetAll(); // 
+        IQueryable<T> GetAll();
         Task<T> GetByIdAsync(int id);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate);
-        public Task<int> CountAsync();
-        public IQueryable<T> GetPaged(int pageNumber, int pageSize);
+        IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate);
+        Task<int> CountAsync();
+        IQueryable<T> GetPaged(int pageNumber, int pageSize);
+
+        // ✅ new method for filtering with pagination
+        IQueryable<T> GetPaged(Expression<Func<T, bool>>? filter, int pageNumber, int pageSize);
     }
 }

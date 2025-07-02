@@ -1,15 +1,18 @@
 ﻿using System.Text.Json;
+using EventManagementSystem.Core.DTOs;
 using EventManagementSystem.API.DTOs;
 using EventManagementSystem.Core.Entities;
 using EventManagementSystem.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace EventManagementSystem.API.Controllers.Auth_Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+	public class UserController : ControllerBase
     {
         // view client Profile and Manage (Client)
 
