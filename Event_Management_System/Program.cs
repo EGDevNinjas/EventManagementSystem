@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using EventManagementSystem.Core.DTO_Validators;
+using EventManagementSystem.BLL.Healpers;
+using EventManagementSystem.Core.DTO_Validators.BookingValidators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -53,13 +55,18 @@ namespace Event_Management_System
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Config To Enable Auto Mapper 
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             // Adding Dependency Injection
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             // عشان FluentValidation يقدر يلاقي الـ Validator classes اللي عملتها (زي UserValidator)
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
-          
+            builder.Services.AddValidatorsFromAssemblyContaining<BookingValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingDTOValidator>();
+            
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));

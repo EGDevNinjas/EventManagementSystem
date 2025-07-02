@@ -1,4 +1,5 @@
-﻿using EventManagementSystem.Core.Entities;
+﻿using System.Reflection.Emit;
+using EventManagementSystem.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +12,9 @@ namespace EventManagementSystem.Core.EntityConfigs
             builder.HasKey(b => b.Id);
 
             builder.Property(b => b.QRCode)
-                   .HasMaxLength(200);
+         .HasColumnType("nvarchar(max)");
+
+
 
             builder.Property(b => b.TotalPrice)
                    .HasColumnType("decimal(10,2)");

@@ -1,4 +1,6 @@
-﻿using EventManagementSystem.API.DTOs;
+﻿using System.Text.Json;
+using EventManagementSystem.Core.DTOs;
+using EventManagementSystem.API.DTOs;
 using EventManagementSystem.Core.Entities;
 using EventManagementSystem.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
