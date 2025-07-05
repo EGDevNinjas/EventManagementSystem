@@ -40,8 +40,4 @@
     <ProjectReference Include="..\EventManagementSystem.Core\EventManagementSystem.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Logs\" />
-  </ItemGroup>
-
 </Project>

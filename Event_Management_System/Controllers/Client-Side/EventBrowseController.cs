@@ -1,9 +1,11 @@
 ﻿using EventManagementSystem.Core.Entities;
 using EventManagementSystem.Core.Interfaces;
+using EventManagementSystem.DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace EventManagementSystem.API.Controllers.Client_Side
 {
@@ -26,45 +28,49 @@ namespace EventManagementSystem.API.Controllers.Client_Side
         }
 
         [HttpGet("GetAllEvents")]
-        public async Task<IActionResult> GetAllEvents()
+
+public async Task<IActionResult> GetAllEvents()
+    {
+        var stopwatch = Stopwatch.StartNew();  // ⏱️ start stopwatch to measure execution time
+
+        string cacheKey = "all_events";
+
+        if (!_cache.TryGetValue(cacheKey, out List<Event> cachedEvents))
         {
-            string cacheKey = "all_events";
+            _logger.LogInformation("⛔ Cache is empty. Loading events from the database...");
 
-            // Check if the data is already cached
-            if (!_cache.TryGetValue(cacheKey, out List<Event> cachedEvents))
+            try
             {
-                _logger.LogInformation("⛔ Cache is empty. Loading events from the database...");
+                var events = await _genericRepository.GetAll().ToListAsync();
 
-                try
-                {
-                    // Retrieve data from the database
-                    var events = await _genericRepository.GetAll().ToListAsync();
+                cachedEvents = events;
 
-                    cachedEvents = events;
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
 
-                    // Set cache options (absolute expiration in 5 minutes)
-                    var cacheEntryOptions = new MemoryCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+                _cache.Set(cacheKey, cachedEvents, cacheEntryOptions);
 
-                    // Store data in cache
-                    _cache.Set(cacheKey, cachedEvents, cacheEntryOptions);
-
-                    _logger.LogInformation("✅ Events have been cached.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"❌ Error while retrieving events: {ex.Message}");
-                    return StatusCode(500, "An error occurred while retrieving the events: " + ex.Message);
-                }
+                _logger.LogInformation("✅ Events have been cached.");
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogInformation("✅ Events retrieved from cache.");
+                _logger.LogError($"❌ Error while retrieving events: {ex.Message}");
+                return StatusCode(500, "An error occurred while retrieving the events: " + ex.Message);
             }
-
-            return Ok(cachedEvents);
         }
-[HttpGet("GetEventById/{id}")]
+        else
+        {
+            _logger.LogInformation("✅ Events retrieved from cache.");
+        }
+
+        stopwatch.Stop(); // ⏹️ stop the stopwatch and log the execution time
+
+            _logger.LogInformation($"⏱️ GetAllEvents endpoint took {stopwatch.ElapsedMilliseconds} ms to execute.");
+
+        return Ok(cachedEvents);
+    }
+
+    [HttpGet("GetEventById/{id}")]
         public async Task<IActionResult> GetEventById(int id)
         {
             try

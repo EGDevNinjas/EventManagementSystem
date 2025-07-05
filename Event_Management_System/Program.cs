@@ -1,21 +1,22 @@
-﻿using System.Configuration;
-using EventManagementSystem.Core.EntityConfigs;
+﻿using EventManagementSystem.BLL.Healpers;
+using EventManagementSystem.BLL.Services;
+using EventManagementSystem.Core.DTO_Validators;
+using EventManagementSystem.Core.DTO_Validators.BookingValidators;
 using EventManagementSystem.Core.Entities;
+using EventManagementSystem.Core.EntityConfigs;
 using EventManagementSystem.Core.Interfaces;
 using EventManagementSystem.DAL;
 using EventManagementSystem.DAL.Contexts;
 using EventManagementSystem.DAL.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using EventManagementSystem.Core.DTO_Validators;
-using EventManagementSystem.BLL.Healpers;
-using EventManagementSystem.Core.DTO_Validators.BookingValidators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using System.Configuration;
 using System.Text;
-using EventManagementSystem.BLL.Services;
 
 namespace Event_Management_System
 {
@@ -70,9 +71,47 @@ namespace Event_Management_System
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+
+            // cache configuration
+
+
+
+
+
+
+
+
+
+            // AddDistributedMemoryCache registers a distributed memory cache service for caching data across multiple instances.
+            //builder.Services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = "localhost:6379"; // Assuming Redis is running locally
+            //});
+
+
+
+            // logging configuration
+            //  Log.Logger = new LoggerConfiguration()
+            //.MinimumLevel.Information()
+            //.WriteTo.Console()
+            //.WriteTo.Debug()
+            //.WriteTo.File("Logs/myapp.txt", rollingInterval: RollingInterval.Day)
+            //.CreateLogger();
+
+
+
+
+
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+
             builder.Services.AddMemoryCache();
 
+
             var app = builder.Build();
+
+
+
 
 
 
