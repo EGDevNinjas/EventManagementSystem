@@ -27,6 +27,15 @@ namespace EventManagementSystem.API.Controllers.Auth_Users
             return Ok(result);
         }
 
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<ActionResult<LoginResponseDto>> Register(RegisterUserDto request)
+        {
+            var result = await _JwtService.RegisterAsync(request);
+            if (result == null)
+                return BadRequest("User already exists or registration failed");
 
-	}
+            return Ok(result);
+        }
+    }
 }

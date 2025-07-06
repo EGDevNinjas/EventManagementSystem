@@ -2,73 +2,117 @@
 using EventManagementSystem.BLL.Healpers;
 using EventManagementSystem.Core.DTOs;
 using EventManagementSystem.Core.Entities;
-using EventManagementSystem.DAL.Contexts;
 using EventManagementSystem.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace EventManagementSystem.BLL.Services
-
 {
+    public class TokenService
+    {
+        private readonly IConfiguration _configuration;
+        private readonly GenericRepository<User> _userRepository;
 
-	public class TokenService
+        public TokenService(GenericRepository<User> userRepository, IConfiguration configuration)
+        {
+            _userRepository = userRepository;
+            _configuration = configuration;
+        }
 
-	{
-		private readonly IConfiguration _configuration;
-		private readonly GenericRepository<User> _userRepository;
+        // ✅ تسجيل الدخول
+        public async Task<LoginResponseDto?> Authunticate(LoginRequestDto request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+                return null;
 
-		public TokenService(GenericRepository<User> Data, IConfiguration configuration) {
-			_userRepository = Data;
-			_configuration = configuration;
-		}
+            var user = await _userRepository
+                .FindByCondition(x => x.Email == request.Email)
+                .FirstOrDefaultAsync();
 
+            if (user == null || !PasswordHashHandler.VerifyPassword(request.Password, user.PasswordHash!))
+                return null;
 
-		public async Task<LoginResponseDto?> Authunticate(LoginRequestDto request)
-		{
-			if(string.IsNullOrWhiteSpace(request.Password)|| string.IsNullOrWhiteSpace(request.Email))
-				return null;
-			var userAccount = await _userRepository
-				.FindByCondition(x => x.Email == request.Email)
-				.FirstOrDefaultAsync();
-			if (userAccount == null || !PasswordHashHandler.VerifyPassword(request.Password, userAccount.PasswordHash!))
-				return null;
-			var Issuer = _configuration["JwtConfig:Issuer"];
-			var audience = _configuration["JwtConfig:Audience"];
-			var key = _configuration["JwtConfig:Key"];
-			var tokenValidMin = int.Parse(_configuration["JwtConfig:DurationInMins"]);
-			var ExpiryTimeStamp = DateTime.UtcNow.AddMinutes(tokenValidMin);
-			var tokenDescriptor = new SecurityTokenDescriptor {
-				Subject = new ClaimsIdentity(new[]
-				{
-					new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Email, request.Email)
-				}),
-				Expires = ExpiryTimeStamp,
-				Issuer = Issuer,
-				Audience = audience,
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))
-				,SecurityAlgorithms.HmacSha256),
+            var accessToken = GenerateJwtToken(user);
 
-			};
-			var tokenHandeler = new JwtSecurityTokenHandler();
-			var securityToken = tokenHandeler.CreateToken(tokenDescriptor);
-			var accessToken = tokenHandeler.WriteToken(securityToken);
+            return new LoginResponseDto
+            {
+                AccessToken = accessToken,
+                Email = user.Email,
+                ExpiredIn = GetTokenExpiryInSeconds()
+            };
+        }
 
-			return new LoginResponseDto
-			{
-				AccessToken = accessToken,
-				Email = request.Email,
-				ExpiredIn = (int)ExpiryTimeStamp.Subtract(DateTime.UtcNow).TotalSeconds
-			};
-		}
-	}
+        // ✅ تسجيل مستخدم جديد + إصدار توكن تلقائي
+        public async Task<LoginResponseDto?> RegisterAsync(RegisterUserDto request)
+        {
+            var existingUser = await _userRepository
+                .FindByCondition(x => x.Email == request.Email)
+                .FirstOrDefaultAsync();
+
+            if (existingUser != null)
+                return null;
+
+            var hashedPassword = PasswordHashHandler.HashPassword(request.PasswordHash);
+
+            var newUser = new User
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                PasswordHash = hashedPassword,
+                Phone = request.Phone,
+                IsActive = true
+            };
+
+            await _userRepository.AddAsync(newUser);
+
+            // تسجيل الدخول مباشرة بعد التسجيل
+            return await Authunticate(new LoginRequestDto
+            {
+                Email = request.Email,
+                Password = request.PasswordHash
+            });
+        }
+
+        // 🛡️ إنشاء التوكن JWT
+        private string GenerateJwtToken(User user)
+        {
+            var issuer = _configuration["JwtConfig:Issuer"];
+            var audience = _configuration["JwtConfig:Audience"];
+            var key = _configuration["JwtConfig:Key"];
+            var expiryMinutes = int.Parse(_configuration["JwtConfig:DurationInMins"]);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // ضروري لبعض الأماكن
+                new Claim("id", user.Id.ToString()) // ✅ علشان JWTReader يشتغل
+            };
+
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        // ⏳ احسب عدد الثواني حتى انتهاء التوكن
+        private int GetTokenExpiryInSeconds()
+        {
+            var expiryMinutes = int.Parse(_configuration["JwtConfig:DurationInMins"]);
+            return (int)TimeSpan.FromMinutes(expiryMinutes).TotalSeconds;
+        }
+    }
 }
