@@ -22,6 +22,7 @@ namespace Event_Management_System
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,7 +39,9 @@ namespace Event_Management_System
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<BookingValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingDTOValidator>();
-            
+
+            builder.Services.AddValidatorsFromAssemblyContaining<EmailQueueValidator>();
+
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
