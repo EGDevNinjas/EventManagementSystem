@@ -29,12 +29,14 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="8.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EventManagementSystem.BLL\EventManagementSystem.BLL.csproj" />
     <ProjectReference Include="..\EventManagementSystem.Core\EventManagementSystem.Core.csproj" />
 	  <ProjectReference Include="..\EventManagementSystem.DAL\EventManagementSystem.DAL.csproj" />
   </ItemGroup>
