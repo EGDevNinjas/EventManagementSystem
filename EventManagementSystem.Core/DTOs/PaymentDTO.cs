@@ -10,5 +10,6 @@ namespace EventManagementSystem.Core.DTOs
         public decimal Amount { get; set; }
         public DateTime? PaidAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        public BookingDTO Booking { get; set; }
     }
 }

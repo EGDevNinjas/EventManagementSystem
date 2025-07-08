@@ -16,7 +16,6 @@ namespace EventManagementSystem.Core.Entities
         public decimal Amount { get; set; }
         public DateTime? PaidAt { get; set; }
         public DateTime CreatedAt { get; set; }
-
         public Booking Booking { get; set; } = null!;
     }
 }

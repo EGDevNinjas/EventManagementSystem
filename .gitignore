@@ -8,3 +8,5 @@ obj/
 *.db
 *.DS_Store
 .env
+
+.fake
