@@ -29,7 +29,7 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
         }
 
         // 1) Payment Processing
-
+        #region 1) Payment Processing
         [HttpPost("process")]
         public async Task<IActionResult> ProcessPayment
             ([FromBody] ProcessPaymentDTO processPaymentDTO)
@@ -163,8 +163,10 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
             }
         }
 
+        #endregion
 
         // 2) Payment History & Management
+        #region Payment History & Management
         [HttpGet("status/{status}")]
         public async Task<IActionResult> GetPaymentsByStatus(string status)
         {
@@ -245,9 +247,10 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
                 return StatusCode(500, "An error occurred while retrieving payments for the organizer");
             }
         }
+        #endregion
 
         // 3) Refund Management
-
+        #region Refund Management
         // Refund a payment
         [HttpPost("{paymentId}/refund")]
         public async Task<IActionResult> ProcessRefund(int paymentId)
@@ -321,9 +324,10 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
             }
         }
 
+        #endregion
 
         // 4) Payment Status Updates
-        
+        #region Payment Status Updates
         [HttpPut("{paymentId}/status")]
         public async Task<IActionResult> UpdatePayment(int paymentId, string newStatus)
         {
@@ -355,7 +359,6 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
             var paymentDTO = _mapper.Map<PaymentDTO>(payment);
             return Ok(paymentDTO);
         }
-
         
         [HttpPost("{paymentId}/cancel")]
         public async Task<IActionResult> CancelPayment(int paymentId)
@@ -367,10 +370,14 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
             if (payment is null)
                 return NotFound($"No payment found with ID {paymentId}.");
 
+            if (string.Equals(payment.PaymentStatus, "Canceled", StringComparison.OrdinalIgnoreCase))
+                return Ok(new { Message = $"Payment {paymentId} is already canceled.", Payment = _mapper.Map<PaymentDTO>(payment) });
+
             if (!string.Equals(payment.PaymentStatus, "Pending", StringComparison.OrdinalIgnoreCase))
                 return BadRequest($"Only pending payments can be canceled. Current status: {payment.PaymentStatus}.");
 
-            payment.PaymentStatus = "Canceled"; 
+            payment.PaymentStatus = "Canceled";
+            // Optionally: payment.CanceledAt = DateTime.UtcNow;
 
             try
             {
@@ -380,13 +387,92 @@ namespace EventManagementSystem.API.Controllers.Booking_Payment
             }
             catch (Exception ex)
             {
-                // TODO: log error
+                // TODO: log error, e.g. _logger.LogError(ex, "Error canceling payment {PaymentId}", paymentId);
                 return StatusCode(500, "An error occurred while canceling the payment.");
             }
         }
+        #endregion
+
+        // 5) Payment Methods & Configuration
+        #region Payment Methods & Configuration
+        [HttpGet("available-methods")]
+        public IActionResult GetAvailablePaymentMethods()
+        {
+            try
+            {
+                var paymentMethods = new List<string> { "Credit Card", "PayPal", "Bank Transfer", "VF Cash"};
+                return Ok(paymentMethods);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while retrieving payment methods");
+            }
+        }
+
+        [HttpGet("gateway-status")]
+        public IActionResult CheckPaymentGatewayStatus(string paymentMethod)
+        {
+            try
+            {
+                var supportedMethods = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    "Credit Card", "PayPal", "Bank Transfer", "VF Cash"
+                };
+                if (string.IsNullOrWhiteSpace(paymentMethod) || !supportedMethods.Contains(paymentMethod))
+                {
+                    return BadRequest(new
+                    {
+                        Status = "Invalid",
+                        Message = "Invalid or unsupported payment method"
+                    });
+                }
+                bool isGatewayAvailable = SimulateGatewayStatusCheck(paymentMethod);
+
+                if (!isGatewayAvailable)
+                {
+                    return StatusCode
+                        (503, new
+                        {
+                            Status = "Unavailable",
+                            Message = $"{paymentMethod} gateway is currently unavailable"
+                        });
+                }
+
+                return Ok(new 
+                {
+                    Status = "Online",
+                    Method = paymentMethod,
+                    Message = $"{paymentMethod} gateway is available" 
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here
+                return StatusCode(500, "An error occurred while checking payment gateway status");
+            }
+        }
+        // Simulated gateway check method
+        private bool SimulateGatewayStatusCheck(string method)
+        {
+            // For now, we assume all methods are available
+            return true;
+        }
+        #endregion
+
+
+        // 6) Admin/Reporting
+        #region Admin/Reporting
 
 
 
+        #endregion
+
+
+        // 7) Security & Compliance
+        #region Security & Compliance
+        // Implement security measures like input validation, logging, etc.
+        // Ensure compliance with payment regulations (e.g., PCI DSS)
+        #endregion
 
 
 
