@@ -136,7 +136,8 @@ namespace Event_Management_System
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            app.UseMiddleware<RateLimitingMiddleware>();
+            app.UseMiddleware<ProfilingMiddleware>();
             app.MapControllers();
 
             app.Run();
