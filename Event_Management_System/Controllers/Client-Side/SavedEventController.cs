@@ -7,6 +7,6 @@ namespace EventManagementSystem.API.Controllers.Client_Side
     [ApiController]
     public class SavedEventController : ControllerBase
     {
-        // Save/Unsave events
+        // Save/delete events
     }
 }

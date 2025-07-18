@@ -1,4 +1,5 @@
-﻿using EventManagementSystem.BLL.Healpers;
+﻿using EventManagementSystem.API.Filters;
+using EventManagementSystem.BLL.Healpers;
 using EventManagementSystem.BLL.Services;
 using EventManagementSystem.Core.DTO_Validators;
 using EventManagementSystem.Core.DTO_Validators.BookingValidators;
@@ -52,7 +53,9 @@ namespace Event_Management_System
             builder.Services.AddAuthorization();
 			builder.Services.AddScoped<TokenService>();
 			builder.Services.AddScoped<GenericRepository<User>>();
-			builder.Services.AddControllers();
+            builder.Services.AddControllers(option =>{
+                option.Filters.Add<LogActivityFilter>();
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

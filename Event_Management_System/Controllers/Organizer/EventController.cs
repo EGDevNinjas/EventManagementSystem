@@ -17,7 +17,7 @@ namespace EventManagementSystem.API.Controllers.Organizer
         {
             _genericRepository = genericRepository;
         }
-
+        [Audit]
         [HttpPost]
         public async Task<IActionResult> AddEvent([FromBody] Event _event)
         {
