@@ -111,6 +111,18 @@ namespace Event_Management_System
             builder.Services.AddMemoryCache();
 
 
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .WriteTo.Debug()
+                //.WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) // لوج جديد لكل يوم
+                .WriteTo.Seq("http://localhost:5341") // تأكد من عنوان SEQ لو مختلف
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
+
+
             var app = builder.Build();
 
 
