@@ -122,6 +122,9 @@ namespace Event_Management_System
 
             builder.Host.UseSerilog();
 
+            builder.Services.AddScoped<NotificationService>();
+
+
 
             var app = builder.Build();
 
