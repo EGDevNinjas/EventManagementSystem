@@ -51,6 +51,7 @@ namespace Event_Management_System
             });
 
             builder.Services.AddAuthorization();
+
 			builder.Services.AddScoped<TokenService>();
 			builder.Services.AddScoped<GenericRepository<User>>();
             builder.Services.AddControllers(option =>{

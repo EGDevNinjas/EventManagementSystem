@@ -50,6 +50,7 @@ namespace EventManagementSystem.API.Controllers.Client_Side
 
         // ✅ Mark a specific notification as read
         [HttpPut("{id}/read")]
+        //write url example: /api/Notification/1/read
         public async Task<IActionResult> MarkAsRead(int id)
         {
             var success = await _notificationService.MarkAsReadAsync(id);
