@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace EventManagementSystem.Core.DTOs
 {
-    public class NotificationDto
+    public class SavedEventDto
     {
-        public int Id { get; set; }
-        public string Message { get; set; }
+        public int EventId { get; set; }
         public string Title { get; set; }
-        public bool IsRead { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
     }
-
 }
