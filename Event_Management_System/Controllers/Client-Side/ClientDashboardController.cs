@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EventManagementSystem.API.Filters;
+using EventManagementSystem.Core.DTOs;
+using EventManagementSystem.Core.Entities;
+using EventManagementSystem.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using EventManagementSystem.Core.Entities;
-using EventManagementSystem.Core.Interfaces;
-using EventManagementSystem.Core.DTOs;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventManagementSystem.API.Controllers.Client_Side
 {
@@ -39,7 +40,7 @@ namespace EventManagementSystem.API.Controllers.Client_Side
             }
             return null;
         }
-
+        [CacheResponse(300)]
         [HttpGet("attendance")]
         public async Task<IActionResult> GetAttendance(int pageNumber = 1, int pageSize = 10)
         {
