@@ -49,7 +49,7 @@ namespace EventManagementSystem.API.Controllers.Client_Side
             {
                 return Unauthorized();
             }
-
+            
             var now = DateTime.UtcNow;
 
             var attendance = await _bookingRepository
